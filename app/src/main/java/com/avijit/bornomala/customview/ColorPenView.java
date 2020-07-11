@@ -1,6 +1,9 @@
 package com.avijit.bornomala.customview;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -10,6 +13,8 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.annotation.Nullable;
+
+import com.avijit.bornomala.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +26,8 @@ import java.util.List;
 public class ColorPenView extends View {
     private List<Point> points = new ArrayList<>();
     Paint paint= new Paint();
+    Resources res = getResources();
+    Bitmap bitmap = BitmapFactory.decodeResource(res, R.drawable.ho);
     /**
      * Simple constructor to use when creating a view from code.
      *
@@ -109,7 +116,7 @@ public class ColorPenView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        canvas.drawColor(Color.rgb(255,255,255));
+        canvas.setBitmap(bitmap);
         for (Point p: points){
             paint.setColor(Color.rgb((int)(Math.random()*256),(int)(Math.random()*256),(int)(Math.random()*256)));
             canvas.drawCircle(p.x,p.y,35,paint);
