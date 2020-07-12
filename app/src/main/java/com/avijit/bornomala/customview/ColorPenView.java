@@ -8,9 +8,12 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -24,10 +27,12 @@ import java.util.List;
  * Email: avijitach@gmail.com.
  */
 public class ColorPenView extends View {
+    private static final String TAG = "ColorPenView";
     private List<Point> points = new ArrayList<>();
     Paint paint= new Paint();
     Resources res = getResources();
     Bitmap bitmap = BitmapFactory.decodeResource(res, R.drawable.ho);
+
     /**
      * Simple constructor to use when creating a view from code.
      *
@@ -116,17 +121,64 @@ public class ColorPenView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        canvas.setBitmap(bitmap);
+        paint.setColor(Color.GREEN);
         for (Point p: points){
-            paint.setColor(Color.rgb((int)(Math.random()*256),(int)(Math.random()*256),(int)(Math.random()*256)));
+            //paint.setColor(Color.rgb((int)(Math.random()*256),(int)(Math.random()*256),(int)(Math.random()*256)));
             canvas.drawCircle(p.x,p.y,35,paint);
         }
-    }
 
+    }
+    public boolean checkImage(){
+        int width = getWidth();
+        int height = getHeight();
+        Log.d(TAG, "check: "+width+" "+height);
+        Bitmap bitmap= takeScreenShot(this);
+        this.bitmap=bitmap;
+        int A, R, G, B;
+        int pixel;
+        for(int i=0;i<width;i++){
+            for (int j=0;j<height;j++){
+                pixel = bitmap.getPixel(i, j);
+                A = Color.alpha(pixel);
+                R = Color.red(pixel);
+                G = Color.green(pixel);
+                B = Color.blue(pixel);
+
+                //Log.d(TAG, i+" "+j+ " check: "+pixel+" A: "+A+" R: "+R+" G: "+G+" B: "+B);
+                if(R>200 && G<100 && B<100){
+                    return false;
+                }
+            }
+
+        }
+        return true;
+    }
+    public Bitmap takeScreenShot(View view) {
+        view.setDrawingCacheEnabled(true);
+        view.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
+        view.buildDrawingCache();
+
+        if(view.getDrawingCache() == null) return null;
+        Bitmap snapshot = Bitmap.createBitmap(view.getDrawingCache());
+        view.setDrawingCacheEnabled(false);
+        view.destroyDrawingCache();
+
+        return snapshot;
+    }
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         points.add(new Point((int)event.getX(),(int) event.getY()));
+        //check();
         invalidate();
         return true;
+    }
+    public void clear(){
+        Log.d(TAG, "abc: ");
+        //this.setBackground(getResources().getDrawable(R.drawable.hh));
+        points.clear();
+        invalidate();
+    }
+    public boolean check(){
+        return checkImage();
     }
 }

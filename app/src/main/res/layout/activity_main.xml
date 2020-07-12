@@ -4,13 +4,52 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="center"
     tools:context=".MainActivity">
 
     <com.avijit.bornomala.customview.ColorPenView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:id="@+id/color_pen_view"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:outlineProvider="paddedBounds"
+        android:layout_margin="50dp"
+        android:elevation="20dp"
+        android:layout_marginBottom="200dp"
+        android:background="@drawable/hh"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:background="@drawable/ho"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/clear_button"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="20dp"
+        android:outlineProvider="bounds"
+        android:background="#FFF"
+        android:padding="20dp"
+        android:text="Clear"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/color_pen_view" />
+
+    <TextView
+        android:id="@+id/check_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="20dp"
+        android:outlineProvider="paddedBounds"
+        android:padding="20dp"
+        android:background="#FFF"
+        android:text="Check"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/clear_button"
+        app:layout_constraintTop_toBottomOf="@id/color_pen_view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
