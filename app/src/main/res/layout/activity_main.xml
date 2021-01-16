@@ -4,52 +4,90 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center"
+    android:background="#FFFFFF"
+    android:animateLayoutChanges="true"
     tools:context=".MainActivity">
 
-    <com.avijit.bornomala.customview.ColorPenView
-        android:id="@+id/color_pen_view"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:outlineProvider="paddedBounds"
-        android:layout_margin="50dp"
-        android:elevation="20dp"
-        android:layout_marginBottom="200dp"
-        android:background="@drawable/hh"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/clear_button"
-        android:gravity="center"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/read_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:transitionName="a"
+        android:animateLayoutChanges="true"
+        android:background="@drawable/white_bg_round"
         android:elevation="20dp"
-        android:outlineProvider="bounds"
-        android:background="#FFF"
-        android:padding="20dp"
-        android:text="Clear"
-        android:textSize="30sp"
+        android:padding="10dp"
+        app:layout_constraintBottom_toTopOf="@id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/color_pen_view" />
+        >
 
-    <TextView
-        android:id="@+id/check_button"
+        <ImageView
+            android:id="@+id/read_logo"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@mipmap/ic_book"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/read_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="পড়ি"
+            android:textColor="#000000"
+            android:textSize="40sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/read_logo"
+            app:layout_constraintTop_toTopOf="parent"
+
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/write_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:animateLayoutChanges="true"
+        android:background="@drawable/bg_round_color"
         android:elevation="20dp"
-        android:outlineProvider="paddedBounds"
-        android:padding="20dp"
-        android:background="#FFF"
-        android:text="Check"
-        android:textSize="30sp"
+        android:transitionName="b"
+        android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/clear_button"
-        app:layout_constraintTop_toBottomOf="@id/color_pen_view" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline">
+
+        <ImageView
+            android:id="@+id/write_logo"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@mipmap/ic_pen"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/write_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="লিখি"
+            android:textColor="#FFFFFF"
+            android:textSize="40sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/write_logo"
+            app:layout_constraintTop_toTopOf="parent"
+
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".5"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
