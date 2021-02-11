@@ -42,7 +42,7 @@ public class VowelAdapter extends RecyclerView.Adapter<VowelAdapter.ViewHolder>{
         holder.binding.getRoot().setOnClickListener(v -> {
             ObjectAnimator.ofFloat(v,View.SCALE_X,0f,1f).start();
             ObjectAnimator.ofFloat(v,View.SCALE_Y,0f,1f).start();
-            playAudio(holder.binding.getRoot().getContext(),"sndc"+(position+1));
+            playAudio(holder.binding.getRoot().getContext(),"sndv"+(position+1));
         });
     }
 
