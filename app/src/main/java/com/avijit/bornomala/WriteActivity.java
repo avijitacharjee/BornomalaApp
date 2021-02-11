@@ -1,9 +1,14 @@
 package com.avijit.bornomala;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.avijit.bornomala.adapter.WriteAdapter;
@@ -15,16 +20,17 @@ import java.util.List;
 import me.jfenn.colorpickerdialog.dialogs.ColorPickerDialog;
 
 public class WriteActivity extends AppCompatActivity {
+    private static Context CONTEXT;
     ActivityWriteBinding binding;
     WriteAdapter adapter;
     List<String> chars;
-
+    public static final int PERMISSION_REQUEST_CODE =102;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityWriteBinding.inflate(getLayoutInflater(), null, false);
         setContentView(binding.getRoot());
-
+        CONTEXT = this;
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         binding.recyclerView.setLayoutManager(layoutManager);
@@ -49,12 +55,33 @@ public class WriteActivity extends AppCompatActivity {
                     })
                     .show(getSupportFragmentManager(), "colorPicker");
         });
-        binding.icSave.setOnClickListener(v -> binding.customView.saveToDevice());
+        binding.icSave.setOnClickListener(v -> {
+            if (ContextCompat.checkSelfPermission(
+                    CONTEXT, Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
+                    PackageManager.PERMISSION_GRANTED) {
+                // You can use the API that requires the permission.
+                //performAction(...);
+                    binding.customView.saveToDevice();
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    // In an educational UI, explain to the user why your app requires this
+                    // permission for a specific feature to behave as expected. In this UI,
+                    // include a "cancel" or "no thanks" button that allows the user to
+                    // continue using your app without granting the permission.
 
-
+                } else {
+                    // You can directly ask for the permission.
+                    // The registered ActivityResultCallback gets the result of this request.
+                    requestPermissions(new String[] { Manifest.permission.WRITE_EXTERNAL_STORAGE , Manifest.permission.READ_EXTERNAL_STORAGE},
+                            PERMISSION_REQUEST_CODE);
+                }
+            }
+            //binding.customView.saveToDevice();
+        });
     }
 
     public void addLetters() {
+        // Vowels
         chars.add("অ");
         chars.add("আ");
         chars.add("ই");
@@ -68,6 +95,7 @@ public class WriteActivity extends AppCompatActivity {
         chars.add("ঔ");
         chars.add("ঔ");
 
+        // Consonants
         chars.add("ক");
         chars.add("খ");
         chars.add("গ");
@@ -108,5 +136,27 @@ public class WriteActivity extends AppCompatActivity {
         chars.add(":");
         chars.add("‍ঁ");
 
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                           int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSION_REQUEST_CODE:
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 &&
+                        grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission is granted. Continue the action or workflow
+                    // in your app.
+                }  else {
+                    // Explain to the user that the feature is unavailable because
+                    // the features requires a permission that the user has denied.
+                    // At the same time, respect the user's decision. Don't link to
+                    // system settings in an effort to convince the user to change
+                    // their decision.
+                }
+                return;
+        }
+        // Other 'case' lines to check for other
+        // permissions this app might request.
     }
 }

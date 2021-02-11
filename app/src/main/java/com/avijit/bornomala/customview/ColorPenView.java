@@ -1,6 +1,7 @@
 package com.avijit.bornomala.customview;
 
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -36,10 +37,10 @@ import java.util.List;
 public class ColorPenView extends androidx.appcompat.widget.AppCompatTextView {
     private static final String TAG = "ColorPenView";
     private List<Point> points = new ArrayList<>();
-    Paint paint= new Paint();
+    Paint paint = new Paint();
     Resources res = getResources();
     Bitmap bitmap = BitmapFactory.decodeResource(res, R.drawable.ho);
-    int color=Color.GREEN;
+    int color = Color.GREEN;
 
     public ColorPenView(Context context) {
         super(context);
@@ -57,22 +58,23 @@ public class ColorPenView extends androidx.appcompat.widget.AppCompatTextView {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         paint.setColor(color);
-        for (Point p: points){
+        for (Point p : points) {
             //paint.setColor(Color.rgb((int)(Math.random()*256),(int)(Math.random()*256),(int)(Math.random()*256)));
-            canvas.drawCircle(p.x,p.y,35,paint);
+            canvas.drawCircle(p.x, p.y, 35, paint);
         }
 
     }
-    public boolean checkImage(){
+
+    public boolean checkImage() {
         int width = getWidth();
         int height = getHeight();
-        Log.d(TAG, "check: "+width+" "+height);
-        Bitmap bitmap= takeScreenShot(this);
-        this.bitmap=bitmap;
+        Log.d(TAG, "check: " + width + " " + height);
+        Bitmap bitmap = takeScreenShot(this);
+        this.bitmap = bitmap;
         int A, R, G, B;
         int pixel;
-        for(int i=0;i<width;i++){
-            for (int j=0;j<height;j++){
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
                 pixel = bitmap.getPixel(i, j);
                 A = Color.alpha(pixel);
                 R = Color.red(pixel);
@@ -80,7 +82,7 @@ public class ColorPenView extends androidx.appcompat.widget.AppCompatTextView {
                 B = Color.blue(pixel);
 
                 //Log.d(TAG, i+" "+j+ " check: "+pixel+" A: "+A+" R: "+R+" G: "+G+" B: "+B);
-                if(R>200 && G<100 && B<100){
+                if (R > 200 && G < 100 && B < 100) {
                     return false;
                 }
             }
@@ -88,40 +90,45 @@ public class ColorPenView extends androidx.appcompat.widget.AppCompatTextView {
         }
         return true;
     }
+
     public Bitmap takeScreenShot(View view) {
         view.setDrawingCacheEnabled(true);
         view.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
         view.buildDrawingCache();
 
-        if(view.getDrawingCache() == null) return null;
+        if (view.getDrawingCache() == null) return null;
         Bitmap snapshot = Bitmap.createBitmap(view.getDrawingCache());
         view.setDrawingCacheEnabled(false);
         view.destroyDrawingCache();
 
         return snapshot;
     }
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        points.add(new Point((int)event.getX(),(int) event.getY()));
+        points.add(new Point((int) event.getX(), (int) event.getY()));
         //check();
         invalidate();
         return true;
     }
-    public void clear(){
+
+    public void clear() {
         Log.d(TAG, "abc: ");
         //this.setBackground(getResources().getDrawable(R.drawable.hh));
         points.clear();
         invalidate();
     }
-    public boolean check(){
+
+    public boolean check() {
         return checkImage();
     }
 
-    public void setPenColor(int color){
-        this.color=color;
+    public void setPenColor(int color) {
+        this.color = color;
     }
-    public void saveToDevice(){
-        File f = new File(Environment.getExternalStorageDirectory()
+
+    public void saveToDevice() {
+        /*File f = new File(Environment.getExternalStorageDirectory()
                 .toString() + "/" + System.currentTimeMillis() + ".png");
         try {
             f.createNewFile();
@@ -134,12 +141,12 @@ public class ColorPenView extends androidx.appcompat.widget.AppCompatTextView {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        /*AsyncTask.execute(new Runnable() {
+        *//*AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
 
             }
-        });*/
+        });*//*
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
         try {
             fOut.flush();
@@ -150,6 +157,56 @@ public class ColorPenView extends androidx.appcompat.widget.AppCompatTextView {
             fOut.close();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
+
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                ContextWrapper cw = new ContextWrapper(getContext());
+                // path to /data/data/yourapp/app_data/imageDir
+                File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+                // path to home dir
+                File homeDir = new File("/mnt/sdcard");
+
+                //int sd
+                String extStore = System.getenv("EXTERNAL_STORAGE");
+                File f_exts = new File(extStore);
+
+                //
+                String folderPath = Environment.getExternalStorageDirectory() + "/Bornomala";
+                File folder = new File(folderPath);
+                if (!folder.exists()) {
+                    File wallpaperDirectory = new File(folderPath);
+                    wallpaperDirectory.mkdirs();
+                }
+                //
+                String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();
+                File myDir = new File(root + "/saved_images");
+                if (!myDir.exists()) {
+                    myDir.mkdirs();
+                }
+                // Create imageDir
+                File mypath = new File(f_exts, System.currentTimeMillis()+".jpg");
+
+                FileOutputStream fos = null;
+                try {
+                    fos = new FileOutputStream(mypath);
+                    // Use the compress method on the BitMap object to write image to the OutputStream
+                    FileOutputStream finalFos = fos;
+                    takeScreenShot(ColorPenView.this).compress(Bitmap.CompressFormat.PNG, 100, finalFos);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    try {
+                        fos.flush();
+                        fos.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            ;
+        });
     }
 }
