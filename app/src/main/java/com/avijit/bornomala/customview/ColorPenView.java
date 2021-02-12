@@ -181,12 +181,12 @@ public class ColorPenView extends androidx.appcompat.widget.AppCompatTextView {
                 }
                 //
                 String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();
-                File myDir = new File(root + "/saved_images");
+                File myDir = new File(root + "/Bornomala");
                 if (!myDir.exists()) {
                     myDir.mkdirs();
                 }
                 // Create imageDir
-                File mypath = new File(f_exts, System.currentTimeMillis()+".jpg");
+                File mypath = new File(myDir, System.currentTimeMillis()+".jpg");
 
                 FileOutputStream fos = null;
                 try {
