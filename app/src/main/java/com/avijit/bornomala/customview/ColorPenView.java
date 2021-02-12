@@ -162,7 +162,7 @@ public class ColorPenView extends androidx.appcompat.widget.AppCompatTextView {
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
-                ContextWrapper cw = new ContextWrapper(getContext());
+                /*ContextWrapper cw = new ContextWrapper(getContext());
                 // path to /data/data/yourapp/app_data/imageDir
                 File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
                 // path to home dir
@@ -178,7 +178,7 @@ public class ColorPenView extends androidx.appcompat.widget.AppCompatTextView {
                 if (!folder.exists()) {
                     File wallpaperDirectory = new File(folderPath);
                     wallpaperDirectory.mkdirs();
-                }
+                }*/
                 //
                 String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();
                 File myDir = new File(root + "/Bornomala");
@@ -186,7 +186,7 @@ public class ColorPenView extends androidx.appcompat.widget.AppCompatTextView {
                     myDir.mkdirs();
                 }
                 // Create imageDir
-                File mypath = new File(myDir, System.currentTimeMillis()+".jpg");
+                File mypath = new File(myDir, "Bornomala_"+System.currentTimeMillis()+".jpg");
 
                 FileOutputStream fos = null;
                 try {
