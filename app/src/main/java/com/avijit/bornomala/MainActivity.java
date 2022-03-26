@@ -43,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
 
                 binding.writeText.setText("ব্যঞ্জনবর্ণ");
                 binding.writeLogo.setVisibility(View.GONE);
+
+                binding.evalLayout.setVisibility(View.GONE);
             }else {
                 startActivity(new Intent(this,VowelActivity.class));
             }
@@ -53,6 +55,10 @@ public class MainActivity extends AppCompatActivity {
             }else {
                 startActivity(new Intent(this,ConsonantActivity.class));
             }
+        });
+
+        binding.evalLayout.setOnClickListener(l->{
+            startActivity(new Intent(this,EvalActivity.class));
         });
     }
     public void animate(){
