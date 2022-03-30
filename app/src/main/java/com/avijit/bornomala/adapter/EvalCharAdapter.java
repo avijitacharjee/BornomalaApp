@@ -20,12 +20,13 @@ public class EvalCharAdapter extends RecyclerView.Adapter<EvalCharAdapter.ViewHo
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         binding = ItemEvalCharBinding.inflate(LayoutInflater.from(parent.getContext()),parent,false);
-        return new EvalCharAdapter.ViewHolder(binding);
+        return new ViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull EvalCharAdapter.ViewHolder holder, int position) {
-        holder.binding.charTextView.setText(charList.get(position));
+        //holder.binding.charTextView.setText(charList.get(position));
+        holder.binding.charTextView.setText("A");
     }
 
     @Override
