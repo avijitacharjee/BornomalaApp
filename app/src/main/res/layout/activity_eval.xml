@@ -39,13 +39,15 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
     
     
-    <LinearLayout
+    <ImageView
+        android:id="@+id/target_image"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         app:layout_constraintTop_toBottomOf="@id/recycler_layout"
         android:layout_marginTop="30dp"
         android:background="@color/colorPrimaryDark"
+        android:src="@mipmap/ic_launcher"
         >
 
-    </LinearLayout>
+    </ImageView>
 </androidx.constraintlayout.widget.ConstraintLayout>
