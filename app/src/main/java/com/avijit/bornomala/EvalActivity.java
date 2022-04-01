@@ -22,6 +22,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.avijit.bornomala.adapter.EvalCharAdapter;
@@ -117,7 +118,7 @@ public class EvalActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    ClipData data = ClipData.newPlainText("", "");
+                    ClipData data = ClipData.newPlainText("", "Hello");
                     View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(binding.mainImage);
 
                     binding.mainImage.startDrag(data, shadowBuilder, binding.mainImage, 0);
@@ -135,10 +136,10 @@ public class EvalActivity extends AppCompatActivity {
                     if (e.getClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
                         // As an example of what your application might do, applies a blue color tint
                         // to the View to indicate that it can accept data.
-                        ((ImageView)v).setColorFilter(Color.BLUE);
+                        //((ImageView)v).setColorFilter(Color.BLUE);
 
                         // Invalidate the view to force a redraw in the new tint.
-                        v.invalidate();
+                        //v.invalidate();
 
                         // Returns true to indicate that the View can accept the dragged data.
                         return true;
@@ -152,10 +153,10 @@ public class EvalActivity extends AppCompatActivity {
                 case DragEvent.ACTION_DRAG_ENTERED:
 
                     // Applies a green tint to the View.
-                    ((ImageView)v).setColorFilter(Color.GREEN);
+                    //((ImageView)v).setColorFilter(Color.GREEN);
 
                     // Invalidates the view to force a redraw in the new tint.
-                    v.invalidate();
+                    //v.invalidate();
 
                     // Returns true; the value is ignored.
                     return true;
@@ -168,10 +169,10 @@ public class EvalActivity extends AppCompatActivity {
                 case DragEvent.ACTION_DRAG_EXITED:
 
                     // Resets the color tint to blue.
-                    ((ImageView)v).setColorFilter(Color.BLUE);
+                    //((ImageView)v).setColorFilter(Color.BLUE);
 
                     // Invalidates the view to force a redraw in the new tint.
-                    v.invalidate();
+                    //v.invalidate();
 
                     // Returns true; the value is ignored.
                     return true;
@@ -186,13 +187,14 @@ public class EvalActivity extends AppCompatActivity {
 
                     // Displays a message containing the dragged data.
                     Toast.makeText(this, "Dragged data is " + dragData, Toast.LENGTH_LONG).show();
-
+                    Log.d("avijit", "onCreate: "+dragData);
                     // Turns off any color tints.
-                    ((ImageView)v).clearColorFilter();
-                    ((ImageView)v).setImageResource(R.drawable.boat);
+                    //((ImageView)v).clearColorFilter();
+                    //((ImageView)v).setImageResource(R.drawable.boat);
+                    ((TextView)v).setText("Dropped");
 
                     // Invalidates the view to force a redraw.
-                    v.invalidate();
+                    //v.invalidate();
 
                     // Returns true. DragEvent.getResult() will return true.
                     return true;
@@ -200,10 +202,10 @@ public class EvalActivity extends AppCompatActivity {
                 case DragEvent.ACTION_DRAG_ENDED:
 
                     // Turns off any color tinting.
-                    ((ImageView)v).clearColorFilter();
+                    //((ImageView)v).clearColorFilter();
 
                     // Invalidates the view to force a redraw.
-                    v.invalidate();
+                    //v.invalidate();
 
                     // Does a getResult(), and displays what happened.
                     if (e.getResult()) {
