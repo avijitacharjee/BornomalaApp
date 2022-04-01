@@ -8,9 +8,11 @@ import android.os.Build;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -26,7 +28,7 @@ import java.util.List;
 public class EvalCharAdapter extends RecyclerView.Adapter<EvalCharAdapter.ViewHolder>{
     List<String> charList;
     ItemEvalCharBinding binding;
-    private ConstraintLayout.LayoutParams layoutParams;
+    private LinearLayout.LayoutParams layoutParams;
     private String msg = "lakjdsf";
     public EvalCharAdapter(List<String> charList){
         this.charList = charList;
@@ -44,7 +46,7 @@ public class EvalCharAdapter extends RecyclerView.Adapter<EvalCharAdapter.ViewHo
         holder.binding.charTextView.setOnDragListener((v,event)->{
             switch (event.getAction()){
                 case DragEvent.ACTION_DRAG_STARTED:
-                    layoutParams = (ConstraintLayout.LayoutParams)v.getLayoutParams();
+                    layoutParams = (LinearLayout.LayoutParams)v.getLayoutParams();
                     Log.d(msg, "Action is DragEvent.ACTION_DRAG_STARTED");
 
                     // Do nothing
@@ -73,9 +75,9 @@ public class EvalCharAdapter extends RecyclerView.Adapter<EvalCharAdapter.ViewHo
 
                 case DragEvent.ACTION_DRAG_ENDED   :
                     //((ImageView)v).setColorFilter(Color.GREEN);
-                    ((ImageView)v).setImageResource(R.drawable.boat);
+                    //((ImageView)v).setImageResource(R.drawable.boat);
                     // Invalidates the view to force a redraw in the new tint.
-                    v.invalidate();
+                    //v.invalidate();
 
                     // Returns true; the value is ignored.
                     return true;
@@ -106,6 +108,21 @@ public class EvalCharAdapter extends RecyclerView.Adapter<EvalCharAdapter.ViewHo
             }
             // Indicate that the long-click was handled.
             return true;
+        });
+        holder.binding.charTextView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    ClipData data = ClipData.newPlainText("", charList.get(position));
+                    View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(holder.binding.charTextView);
+
+                    holder.binding.charTextView.startDrag(data, shadowBuilder, holder.binding.charTextView, 0);
+                    //binding.mainImage.setVisibility(View.INVISIBLE);
+                    return true;
+                } else {
+                    return false;
+                }
+            }
         });
         holder.binding.charTextView.setText(charList.get(position));
     }

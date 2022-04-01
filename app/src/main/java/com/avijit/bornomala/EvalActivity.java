@@ -191,7 +191,7 @@ public class EvalActivity extends AppCompatActivity {
                     // Turns off any color tints.
                     //((ImageView)v).clearColorFilter();
                     //((ImageView)v).setImageResource(R.drawable.boat);
-                    ((TextView)v).setText("Dropped");
+                    ((TextView)v).setText(dragData);
 
                     // Invalidates the view to force a redraw.
                     //v.invalidate();
