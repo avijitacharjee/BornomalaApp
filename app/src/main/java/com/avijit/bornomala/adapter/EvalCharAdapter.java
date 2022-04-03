@@ -39,7 +39,6 @@ public class EvalCharAdapter extends RecyclerView.Adapter<EvalCharAdapter.ViewHo
         binding = ItemEvalCharBinding.inflate(LayoutInflater.from(parent.getContext()),parent,false);
         return new ViewHolder(binding);
     }
-
     @Override
     public void onBindViewHolder(@NonNull EvalCharAdapter.ViewHolder holder, int position) {
         //holder.binding.charTextView.setText(charList.get(position));
@@ -117,7 +116,7 @@ public class EvalCharAdapter extends RecyclerView.Adapter<EvalCharAdapter.ViewHo
                     View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(holder.binding.charTextView);
 
                     holder.binding.charTextView.startDrag(data, shadowBuilder, holder.binding.charTextView, 0);
-                    //binding.mainImage.setVisibility(View.INVISIBLE);
+                    //holder.binding.charTextView.setVisibility(View.INVISIBLE);
                     return true;
                 } else {
                     return false;

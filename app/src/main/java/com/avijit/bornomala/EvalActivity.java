@@ -186,13 +186,16 @@ public class EvalActivity extends AppCompatActivity {
                     CharSequence dragData = item.getText();
 
                     // Displays a message containing the dragged data.
-                    Toast.makeText(this, "Dragged data is " + dragData, Toast.LENGTH_LONG).show();
+                    //Toast.makeText(this, "Dragged data is " + dragData, Toast.LENGTH_LONG).show();
                     Log.d("avijit", "onCreate: "+dragData);
                     // Turns off any color tints.
                     //((ImageView)v).clearColorFilter();
                     //((ImageView)v).setImageResource(R.drawable.boat);
-                    ((TextView)v).setText(dragData);
-
+                    TextView textView = ((TextView)v);
+                    textView.append(dragData);
+                    if(textView.getText().toString().equals("নৌকা")){
+                        Toast.makeText(this, "Successful", Toast.LENGTH_SHORT).show();
+                    }
                     // Invalidates the view to force a redraw.
                     //v.invalidate();
 
@@ -209,9 +212,9 @@ public class EvalActivity extends AppCompatActivity {
 
                     // Does a getResult(), and displays what happened.
                     if (e.getResult()) {
-                        Toast.makeText(this, "The drop was handled.", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(this, "The drop was handled.", Toast.LENGTH_LONG).show();
                     } else {
-                        Toast.makeText(this, "The drop didn't work.", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(this, "The drop didn't work.", Toast.LENGTH_LONG).show();
                     }
 
                     // Returns true; the value is ignored.
@@ -226,19 +229,14 @@ public class EvalActivity extends AppCompatActivity {
             return false;
 
         });
+        binding.clearTextView.setOnClickListener(l->{
+            binding.targetImage.setText("");
+            Toast.makeText(this, "Cleared", Toast.LENGTH_SHORT).show();
+        });
     }
     private void addChars() {
-        charList.add("অ");
-        charList.add("আ");
-        charList.add("ই");
-        charList.add("ঈ");
-        charList.add("উ");
-        charList.add("ঊ");
-        charList.add("ঋ");
-        charList.add("এ");
-        charList.add("ঐ");
-        charList.add("ও");
-        charList.add("ঔ");
+        charList.add("কা");
+        charList.add("নৌ");
     }
     private static class MyDragShadowBuilder extends View.DragShadowBuilder {
 

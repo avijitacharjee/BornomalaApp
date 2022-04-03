@@ -62,12 +62,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
     public void animate(){
-        new Handler(Looper.myLooper()).postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                startActivity(new Intent(MainActivity.this,WriteActivity.class));
-            }
-        },0);
+        new Handler(Looper.myLooper()).postDelayed(() -> startActivity(new Intent(MainActivity.this,WriteActivity.class)),0);
     }
 
     @Override
