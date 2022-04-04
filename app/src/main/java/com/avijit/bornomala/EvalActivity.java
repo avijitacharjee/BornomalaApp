@@ -237,6 +237,7 @@ public class EvalActivity extends AppCompatActivity {
     private void addChars() {
         charList.add("কা");
         charList.add("নৌ");
+        charList.add("নে");
     }
     private static class MyDragShadowBuilder extends View.DragShadowBuilder {
 

@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
 
             binding.writeText.setText("লিখি");
             binding.writeLogo.setVisibility(View.VISIBLE);
+            binding.evalLayout.setVisibility(View.VISIBLE);
         }else {
             super.onBackPressed();
         }
