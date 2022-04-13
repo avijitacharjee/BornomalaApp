@@ -5,6 +5,7 @@ import static android.view.DragEvent.ACTION_DROP;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipDescription;
 import android.graphics.Canvas;
@@ -40,6 +41,7 @@ public class EvalActivity extends AppCompatActivity {
     private String msg = "lakjdsf";
 
     private static final String IMAGEVIEW_TAG = "icon bitmap";
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,14 +123,13 @@ public class EvalActivity extends AppCompatActivity {
                     ClipData data = ClipData.newPlainText("", "Hello");
                     View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(binding.mainImage);
 
-                    binding.mainImage.startDrag(data, shadowBuilder, binding.mainImage, 0);
-                    //binding.mainImage.setVisibility(View.INVISIBLE);
-                    return true;
-                } else {
-                    return false;
-                }
+                binding.mainImage.startDrag(data, shadowBuilder, binding.mainImage, 0);
+                //binding.mainImage.setVisibility(View.INVISIBLE);
+                return true;
+            } else {
+                return false;
             }
-        });
+        }});
         binding.targetImage.setOnDragListener( (v, e) -> {
             switch(e.getAction()) {
                 case DragEvent.ACTION_DRAG_STARTED:

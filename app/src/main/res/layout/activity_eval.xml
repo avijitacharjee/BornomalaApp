@@ -63,4 +63,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Clear"/>
+    <TextView
+        android:id="@+id/next_text_view"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="20dp"
+        android:padding="8dp"
+        android:elevation="5dp"
+        android:textColor="#fff"
+        android:background="#9C27B0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Next"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
