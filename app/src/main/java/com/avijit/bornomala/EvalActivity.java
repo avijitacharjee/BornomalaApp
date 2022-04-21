@@ -28,9 +28,19 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.avijit.bornomala.adapter.EvalCharAdapter;
 import com.avijit.bornomala.databinding.ActivityEvalBinding;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,7 +56,7 @@ public class EvalActivity extends AppCompatActivity {
     EvalCharAdapter adapter ;
     private ConstraintLayout.LayoutParams layoutParams;
     private String msg = "lakjdsf";
-
+    private static String SERVER_URL = "http://192.168.0.4/";
     private static final String IMAGEVIEW_TAG = "icon bitmap";
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -60,7 +70,8 @@ public class EvalActivity extends AppCompatActivity {
         binding.mainImage.setTag(IMAGEVIEW_TAG);
         //binding.mainImage.setImageDrawable(loadImageFromWebOperations("http://192.168.0.4/storage/images/2022-04-21-10-30-37JKf98.bmp"));
         //binding.mainImage.setImageDrawable(getResources().getDrawable(R.drawable.boat));
-        Picasso.get().load("http://192.168.0.4/storage/images/2022-04-21-10-30-37JKf98.bmp").into(binding.mainImage);
+        Picasso.get().load(SERVER_URL+"storage/images/2022-04-21-10-30-37JKf98.bmp").into(binding.mainImage);
+        loadQuestions();
         binding.mainImage.setOnLongClickListener( v -> {
             ClipData.Item item = new ClipData.Item((CharSequence) v.getTag());
             ClipData dragData = new ClipData(
@@ -309,5 +320,32 @@ public class EvalActivity extends AppCompatActivity {
         } catch (Exception e) {
             return null;
         }
+    }
+    public void loadQuestions (){
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = SERVER_URL+"api/questions";
+
+// Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(EvalActivity.this, response, Toast.LENGTH_SHORT).show();
+
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(EvalActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
     }
 }
