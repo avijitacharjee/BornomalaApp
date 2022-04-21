@@ -47,4 +47,7 @@ dependencies {
     //color picker
     implementation 'me.jfenn.ColorPickerDialog:base:0.2.1'
 
+    //Load image
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
 }

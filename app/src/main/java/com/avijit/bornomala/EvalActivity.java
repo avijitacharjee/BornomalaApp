@@ -8,6 +8,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipDescription;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Point;
@@ -28,7 +30,12 @@ import android.widget.Toast;
 
 import com.avijit.bornomala.adapter.EvalCharAdapter;
 import com.avijit.bornomala.databinding.ActivityEvalBinding;
+import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -51,6 +58,9 @@ public class EvalActivity extends AppCompatActivity {
         adapter = new EvalCharAdapter(charList);
         binding.recyclerView.setAdapter(adapter);
         binding.mainImage.setTag(IMAGEVIEW_TAG);
+        //binding.mainImage.setImageDrawable(loadImageFromWebOperations("http://192.168.0.4/storage/images/2022-04-21-10-30-37JKf98.bmp"));
+        //binding.mainImage.setImageDrawable(getResources().getDrawable(R.drawable.boat));
+        Picasso.get().load("http://192.168.0.4/storage/images/2022-04-21-10-30-37JKf98.bmp").into(binding.mainImage);
         binding.mainImage.setOnLongClickListener( v -> {
             ClipData.Item item = new ClipData.Item((CharSequence) v.getTag());
             ClipData dragData = new ClipData(
@@ -288,6 +298,16 @@ public class EvalActivity extends AppCompatActivity {
         public void onDrawShadow(Canvas canvas) {
             // Draw the ColorDrawable on the Canvas passed in from the system.
             shadow.draw(canvas);
+        }
+
+    }
+    public static Drawable loadImageFromWebOperations(String url) {
+        try {
+            InputStream is = (InputStream) new URL(url).getContent();
+            Drawable d = Drawable.createFromStream(is, "src name");
+            return d;
+        } catch (Exception e) {
+            return null;
         }
     }
 }
