@@ -74,7 +74,7 @@ public class EvalActivity extends AppCompatActivity {
         binding.mainImage.setTag(IMAGEVIEW_TAG);
         //binding.mainImage.setImageDrawable(loadImageFromWebOperations("http://192.168.0.4/storage/images/2022-04-21-10-30-37JKf98.bmp"));
         //binding.mainImage.setImageDrawable(getResources().getDrawable(R.drawable.boat));
-        Picasso.get().load(SERVER_URL+"storage/images/2022-04-21-10-30-37JKf98.bmp").into(binding.mainImage);
+        //Picasso.get().load(SERVER_URL+"storage/images/2022-04-21-10-30-37JKf98.bmp").into(binding.mainImage);
         loadQuestions();
         binding.mainImage.setOnLongClickListener( v -> {
             ClipData.Item item = new ClipData.Item((CharSequence) v.getTag());
@@ -259,8 +259,16 @@ public class EvalActivity extends AppCompatActivity {
             binding.targetImage.setText("");
             Toast.makeText(this, "Cleared", Toast.LENGTH_SHORT).show();
         });
-        loadQuestions();
         //handleQuestion();
+        binding.nextTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                index++;
+                if(index<questions.length()){
+                    handleQuestion();
+                }
+            }
+        });
     }
     private void handleQuestion(){
         try {
@@ -274,8 +282,6 @@ public class EvalActivity extends AppCompatActivity {
             charList.addAll(Arrays.asList(parts));
             adapter = new EvalCharAdapter(charList);
             binding.recyclerView.setAdapter(adapter);
-
-
         }catch (JSONException e){
 
         }
