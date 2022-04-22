@@ -47,6 +47,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -58,15 +59,18 @@ public class EvalActivity extends AppCompatActivity {
     private String msg = "lakjdsf";
     private static String SERVER_URL = "http://192.168.0.4/";
     private static final String IMAGEVIEW_TAG = "icon bitmap";
+    private JSONArray questions = null;
+    int index = 0;
+    private String word;
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityEvalBinding.inflate(getLayoutInflater(),null,false);
         setContentView(binding.getRoot());
-        addChars();
-        adapter = new EvalCharAdapter(charList);
-        binding.recyclerView.setAdapter(adapter);
+//        addChars();
+//        adapter = new EvalCharAdapter(charList);
+//        binding.recyclerView.setAdapter(adapter);
         binding.mainImage.setTag(IMAGEVIEW_TAG);
         //binding.mainImage.setImageDrawable(loadImageFromWebOperations("http://192.168.0.4/storage/images/2022-04-21-10-30-37JKf98.bmp"));
         //binding.mainImage.setImageDrawable(getResources().getDrawable(R.drawable.boat));
@@ -89,7 +93,7 @@ public class EvalActivity extends AppCompatActivity {
             // Indicate that the long-click was handled.
             return true;
         });
-        binding.mainImage.setOnDragListener((v,event)->{
+        /*binding.mainImage.setOnDragListener((v,event)->{
             switch (event.getAction()){
                 case DragEvent.ACTION_DRAG_STARTED:
                     layoutParams = (ConstraintLayout.LayoutParams)v.getLayoutParams();
@@ -121,7 +125,7 @@ public class EvalActivity extends AppCompatActivity {
 
                 case DragEvent.ACTION_DRAG_ENDED   :
                     //((ImageView)v).setColorFilter(Color.GREEN);
-                    ((ImageView)v).setImageResource(R.drawable.boat);
+                    //((ImageView)v).setImageResource(R.drawable.boat);
                     // Invalidates the view to force a redraw in the new tint.
                     v.invalidate();
 
@@ -150,7 +154,7 @@ public class EvalActivity extends AppCompatActivity {
             } else {
                 return false;
             }
-        }});
+        }});*/
         binding.targetImage.setOnDragListener( (v, e) -> {
             switch(e.getAction()) {
                 case DragEvent.ACTION_DRAG_STARTED:
@@ -215,7 +219,7 @@ public class EvalActivity extends AppCompatActivity {
                     //((ImageView)v).setImageResource(R.drawable.boat);
                     TextView textView = ((TextView)v);
                     textView.append(dragData);
-                    if(textView.getText().toString().equals("নৌকা")){
+                    if(textView.getText().toString().equals(this.word)){
                         Toast.makeText(this, "Successful", Toast.LENGTH_SHORT).show();
                     }
                     // Invalidates the view to force a redraw.
@@ -255,6 +259,26 @@ public class EvalActivity extends AppCompatActivity {
             binding.targetImage.setText("");
             Toast.makeText(this, "Cleared", Toast.LENGTH_SHORT).show();
         });
+        loadQuestions();
+        //handleQuestion();
+    }
+    private void handleQuestion(){
+        try {
+            JSONObject questionObject = questions.getJSONObject(index);
+            String imgUrl = SERVER_URL + "storage/"+questionObject.getString("image");
+            Picasso.get().load(imgUrl).into(binding.mainImage);
+            String word = questionObject.getString("word");
+            this.word = word;
+            String[] parts = questionObject.getString("parts").split(",");
+            charList.clear();
+            charList.addAll(Arrays.asList(parts));
+            adapter = new EvalCharAdapter(charList);
+            binding.recyclerView.setAdapter(adapter);
+
+
+        }catch (JSONException e){
+
+        }
     }
     private void addChars() {
         charList.add("কা");
@@ -330,10 +354,16 @@ public class EvalActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Toast.makeText(EvalActivity.this, response, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(EvalActivity.this, response, Toast.LENGTH_SHORT).show();
 
                         try {
                             JSONObject jsonObject = new JSONObject(response);
+                            JSONArray jsonArray = jsonObject.getJSONArray("data");
+                            questions = jsonArray;
+
+
+                            handleQuestion();
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
