@@ -27,6 +27,7 @@
             android:exported="false" />
         <activity
             android:name=".GamesActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".WritingActivity"
