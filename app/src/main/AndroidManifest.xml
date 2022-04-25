@@ -16,6 +16,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".flygame.GameActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.noActionBar"/>
+        <activity android:name=".FlyActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.noActionBar"/>
+        <activity
+            android:name=".FlyDashboardActivity"
+            android:exported="false" />
         <activity
             android:name=".GamesActivity"
             android:exported="false" />
