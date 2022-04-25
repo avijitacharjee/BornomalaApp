@@ -57,7 +57,8 @@ public class EvalActivity extends AppCompatActivity {
     EvalCharAdapter adapter ;
     private ConstraintLayout.LayoutParams layoutParams;
     private String msg = "lakjdsf";
-    private static String SERVER_URL = "http://192.168.0.2/";
+    private static String SERVER_URL = "http://borno-api.avijitacharjee.com/";
+    //private static String SERVER_URL = "http://192.168.0.2/";
     private static final String IMAGEVIEW_TAG = "icon bitmap";
     private JSONArray questions = null;
     int index = 0;
