@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(this,EvalActivity.class));
         });
         binding.writeLayout2.setOnClickListener(l->{
-            Toast.makeText(this, "Write2", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this,WritingActivity.class));
         });
         binding.gameButtonLayout.setOnClickListener(listener->{
             startActivity(new Intent(this,GamesActivity.class));
