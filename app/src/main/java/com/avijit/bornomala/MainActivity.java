@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
                 binding.writeLogo.setVisibility(View.GONE);
 
                 binding.evalLayout.setVisibility(View.GONE);
+                binding.writeLayout2.setVisibility(View.GONE);
+                binding.gameButtonLayout.setVisibility(View.GONE);
             }else {
                 startActivity(new Intent(this,VowelActivity.class));
             }
@@ -59,6 +61,12 @@ public class MainActivity extends AppCompatActivity {
 
         binding.evalLayout.setOnClickListener(l->{
             startActivity(new Intent(this,EvalActivity.class));
+        });
+        binding.writeLayout2.setOnClickListener(l->{
+            startActivity(new Intent(this,WritingActivity.class));
+        });
+        binding.gameButtonLayout.setOnClickListener(listener->{
+            startActivity(new Intent(this,GamesActivity.class));
         });
     }
     public void animate(){
@@ -76,6 +84,8 @@ public class MainActivity extends AppCompatActivity {
             binding.writeText.setText("লিখি");
             binding.writeLogo.setVisibility(View.VISIBLE);
             binding.evalLayout.setVisibility(View.VISIBLE);
+            binding.gameButtonLayout.setVisibility(View.VISIBLE);
+            binding.writeLayout2.setVisibility(View.VISIBLE);
         }else {
             super.onBackPressed();
         }

@@ -8,6 +8,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipDescription;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Point;
@@ -26,10 +28,26 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.avijit.bornomala.adapter.EvalCharAdapter;
 import com.avijit.bornomala.databinding.ActivityEvalBinding;
+import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -39,18 +57,26 @@ public class EvalActivity extends AppCompatActivity {
     EvalCharAdapter adapter ;
     private ConstraintLayout.LayoutParams layoutParams;
     private String msg = "lakjdsf";
-
+    private static String SERVER_URL = "http://borno-api.avijitacharjee.com/";
+    //private static String SERVER_URL = "http://192.168.0.2/";
     private static final String IMAGEVIEW_TAG = "icon bitmap";
+    private JSONArray questions = null;
+    int index = 0;
+    private String word;
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityEvalBinding.inflate(getLayoutInflater(),null,false);
         setContentView(binding.getRoot());
-        addChars();
-        adapter = new EvalCharAdapter(charList);
-        binding.recyclerView.setAdapter(adapter);
+//        addChars();
+//        adapter = new EvalCharAdapter(charList);
+//        binding.recyclerView.setAdapter(adapter);
         binding.mainImage.setTag(IMAGEVIEW_TAG);
+        //binding.mainImage.setImageDrawable(loadImageFromWebOperations("http://192.168.0.4/storage/images/2022-04-21-10-30-37JKf98.bmp"));
+        //binding.mainImage.setImageDrawable(getResources().getDrawable(R.drawable.boat));
+        //Picasso.get().load(SERVER_URL+"storage/images/2022-04-21-10-30-37JKf98.bmp").into(binding.mainImage);
+        loadQuestions();
         binding.mainImage.setOnLongClickListener( v -> {
             ClipData.Item item = new ClipData.Item((CharSequence) v.getTag());
             ClipData dragData = new ClipData(
@@ -68,7 +94,7 @@ public class EvalActivity extends AppCompatActivity {
             // Indicate that the long-click was handled.
             return true;
         });
-        binding.mainImage.setOnDragListener((v,event)->{
+        /*binding.mainImage.setOnDragListener((v,event)->{
             switch (event.getAction()){
                 case DragEvent.ACTION_DRAG_STARTED:
                     layoutParams = (ConstraintLayout.LayoutParams)v.getLayoutParams();
@@ -100,7 +126,7 @@ public class EvalActivity extends AppCompatActivity {
 
                 case DragEvent.ACTION_DRAG_ENDED   :
                     //((ImageView)v).setColorFilter(Color.GREEN);
-                    ((ImageView)v).setImageResource(R.drawable.boat);
+                    //((ImageView)v).setImageResource(R.drawable.boat);
                     // Invalidates the view to force a redraw in the new tint.
                     v.invalidate();
 
@@ -129,7 +155,7 @@ public class EvalActivity extends AppCompatActivity {
             } else {
                 return false;
             }
-        }});
+        }});*/
         binding.targetImage.setOnDragListener( (v, e) -> {
             switch(e.getAction()) {
                 case DragEvent.ACTION_DRAG_STARTED:
@@ -194,7 +220,7 @@ public class EvalActivity extends AppCompatActivity {
                     //((ImageView)v).setImageResource(R.drawable.boat);
                     TextView textView = ((TextView)v);
                     textView.append(dragData);
-                    if(textView.getText().toString().equals("নৌকা")){
+                    if(textView.getText().toString().equals(this.word)){
                         Toast.makeText(this, "Successful", Toast.LENGTH_SHORT).show();
                     }
                     // Invalidates the view to force a redraw.
@@ -234,6 +260,35 @@ public class EvalActivity extends AppCompatActivity {
             binding.targetImage.setText("");
             Toast.makeText(this, "Cleared", Toast.LENGTH_SHORT).show();
         });
+        //handleQuestion();
+        binding.nextTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                index++;
+                if(index<questions.length()){
+                    handleQuestion();
+                }
+                else {
+                    Toast.makeText(EvalActivity.this, "Completed All Questions", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+    private void handleQuestion(){
+        try {
+            JSONObject questionObject = questions.getJSONObject(index);
+            String imgUrl = SERVER_URL + "storage/"+questionObject.getString("image");
+            Picasso.get().load(imgUrl).into(binding.mainImage);
+            String word = questionObject.getString("word");
+            this.word = word;
+            String[] parts = questionObject.getString("parts").split(",");
+            charList.clear();
+            charList.addAll(Arrays.asList(parts));
+            adapter = new EvalCharAdapter(charList);
+            binding.recyclerView.setAdapter(adapter);
+        }catch (JSONException e){
+
+        }
     }
     private void addChars() {
         charList.add("কা");
@@ -289,5 +344,47 @@ public class EvalActivity extends AppCompatActivity {
             // Draw the ColorDrawable on the Canvas passed in from the system.
             shadow.draw(canvas);
         }
+
+    }
+    public static Drawable loadImageFromWebOperations(String url) {
+        try {
+            InputStream is = (InputStream) new URL(url).getContent();
+            Drawable d = Drawable.createFromStream(is, "src name");
+            return d;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    public void loadQuestions (){
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = SERVER_URL+"api/questions";
+
+// Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //Toast.makeText(EvalActivity.this, response, Toast.LENGTH_SHORT).show();
+
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray jsonArray = jsonObject.getJSONArray("data");
+                            questions = jsonArray;
+
+                            handleQuestion();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(EvalActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
     }
 }
