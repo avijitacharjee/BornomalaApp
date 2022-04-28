@@ -76,7 +76,8 @@ public class WritingView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.drawBitmap(bitmap, 0, 0, bitmapPaint);
+        //canvas.drawBitmap(bitmap, 0, 0, bitmapPaint);
+        canvas.drawCircle(x,y,35,bitmapPaint);
         canvas.drawPath(path, paint);
     }
 
@@ -85,14 +86,14 @@ public class WritingView extends View {
         path.moveTo(x, y);
         this.x = x;
         this.y = y;
-        canvas.drawPath(path, paint);
+        //canvas.drawPath(path, paint);
     }
 
     private void touchMove(float x, float y) {
         float dx = Math.abs(x - this.x);
         float dy = Math.abs(y - this.y);
         if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
-            path.quadTo(this.x, this.y, (x + this.x) / 2, (y + this.y) / 2);
+            //path.quadTo(this.x, this.y, (x + this.x) / 2, (y + this.y) / 2);
             this.x = x;
             this.y = y;
         }
@@ -100,7 +101,7 @@ public class WritingView extends View {
 
     private void touchUp() {
         path.lineTo(x, y);
-        canvas.drawPath(path, paint);
+        //canvas.drawPath(path, paint);
         path.reset();
         if (drawMode) {
             paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SCREEN));
