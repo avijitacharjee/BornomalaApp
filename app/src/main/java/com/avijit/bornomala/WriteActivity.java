@@ -39,7 +39,8 @@ public class WriteActivity extends AppCompatActivity {
         addLetters();
         View.OnClickListener recyclerItemListener = v -> {
             int itemPosition = binding.recyclerView.getChildLayoutPosition(v);
-            binding.customView.setText(chars.get(itemPosition));
+            //binding.customView.setText(chars.get(itemPosition));
+            binding.customView.checkImage();
         };
         adapter = new WriteAdapter(chars,recyclerItemListener);
         binding.recyclerView.setAdapter(adapter);
@@ -140,6 +141,7 @@ public class WriteActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions,
                                            int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case PERMISSION_REQUEST_CODE:
                 // If request is cancelled, the result arrays are empty.
@@ -147,7 +149,7 @@ public class WriteActivity extends AppCompatActivity {
                         grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // Permission is granted. Continue the action or workflow
                     // in your app.
-                }  else {
+                } else {
                     // Explain to the user that the feature is unavailable because
                     // the features requires a permission that the user has denied.
                     // At the same time, respect the user's decision. Don't link to

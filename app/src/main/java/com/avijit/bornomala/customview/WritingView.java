@@ -25,7 +25,7 @@ import java.io.IOException;
  * Email: avijitach@gmail.com.
  */
 public class WritingView extends View {
-    private static float TOUCH_TOLERANCE = 4;
+    private static float TOUCH_TOLERANCE = 1;
     private Bitmap bitmap;
     private Path path;
     private Paint bitmapPaint;
@@ -85,22 +85,23 @@ public class WritingView extends View {
         path.moveTo(x, y);
         this.x = x;
         this.y = y;
-        canvas.drawPath(path, paint);
+        //canvas.drawPath(path, paint);
     }
 
     private void touchMove(float x, float y) {
         float dx = Math.abs(x - this.x);
         float dy = Math.abs(y - this.y);
         if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
-            path.quadTo(this.x, this.y, (x + this.x) / 2, (y + this.y) / 2);
+            //path.quadTo(this.x, this.y, (x + this.x) / 2, (y + this.y) / 2);
             this.x = x;
             this.y = y;
+            canvas.drawCircle(x,y,35,bitmapPaint);
         }
     }
 
     private void touchUp() {
         path.lineTo(x, y);
-        canvas.drawPath(path, paint);
+        //canvas.drawPath(path, paint);
         path.reset();
         if (drawMode) {
             paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SCREEN));
@@ -157,7 +158,6 @@ public class WritingView extends View {
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
-
                 String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();
                 File myDir = new File(root + "/Signature");
                 if (!myDir.exists()) {

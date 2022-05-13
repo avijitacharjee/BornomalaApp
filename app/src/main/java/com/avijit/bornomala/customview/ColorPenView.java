@@ -62,10 +62,30 @@ public class ColorPenView extends androidx.appcompat.widget.AppCompatTextView {
             //paint.setColor(Color.rgb((int)(Math.random()*256),(int)(Math.random()*256),(int)(Math.random()*256)));
             canvas.drawCircle(p.x, p.y, 35, paint);
         }
-
+        //checkImage();
     }
-
-    public boolean checkImage() {
+    public boolean checkImage(){
+        int width = getWidth();
+        int height = getHeight();
+        Bitmap bitmap = takeScreenShot(this);
+        this.bitmap = bitmap;
+        int A, R, G, B;
+        int pixel;
+        for(int i =0;i<width;i++){
+            for(int j=0;j<height;j++){
+                pixel = bitmap.getPixel(i,j);
+                A = Color.alpha(pixel);
+                R = Color.red(pixel);
+                G = Color.green(pixel);
+                B = Color.blue(pixel);
+                if(R>100 && G <100 && B <100){
+                    Log.d(TAG, "checkImage: "+R);
+                }
+            }
+        }
+        return true;
+    }
+    /*public boolean checkImage() {
         int width = getWidth();
         int height = getHeight();
         Log.d(TAG, "check: " + width + " " + height);
@@ -89,7 +109,7 @@ public class ColorPenView extends androidx.appcompat.widget.AppCompatTextView {
 
         }
         return true;
-    }
+    }*/
 
     public Bitmap takeScreenShot(View view) {
         view.setDrawingCacheEnabled(true);
@@ -109,6 +129,7 @@ public class ColorPenView extends androidx.appcompat.widget.AppCompatTextView {
         points.add(new Point((int) event.getX(), (int) event.getY()));
         //check();
         invalidate();
+        //checkImage();
         return true;
     }
 

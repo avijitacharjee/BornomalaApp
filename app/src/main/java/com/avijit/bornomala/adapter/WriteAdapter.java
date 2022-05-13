@@ -33,7 +33,7 @@ public class WriteAdapter extends RecyclerView.Adapter<WriteAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.binding.textView.setText(chars.get(position));
+        //holder.binding.textView.setText(chars.get(position));
         holder.binding.getRoot().setOnClickListener(listener);
     }
 
