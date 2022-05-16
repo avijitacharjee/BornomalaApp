@@ -1,7 +1,6 @@
 package com.avijit.bornomala;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -13,7 +12,6 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.avijit.bornomala.adapter.WriteAdapter;
-import com.avijit.bornomala.databinding.ActivityWriteBinding;
 import com.avijit.bornomala.databinding.ActivityWritingBinding;
 
 import java.util.ArrayList;
