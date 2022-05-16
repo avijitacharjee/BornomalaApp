@@ -25,7 +25,7 @@ import java.io.IOException;
  * Email: avijitach@gmail.com.
  */
 public class WritingView extends View {
-    private static float TOUCH_TOLERANCE = 4;
+    private static float TOUCH_TOLERANCE = 1;
     private Bitmap bitmap;
     private Path path;
     private Paint bitmapPaint;
@@ -76,8 +76,7 @@ public class WritingView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        //canvas.drawBitmap(bitmap, 0, 0, bitmapPaint);
-        canvas.drawCircle(x,y,35,bitmapPaint);
+        canvas.drawBitmap(bitmap, 0, 0, bitmapPaint);
         canvas.drawPath(path, paint);
     }
 
@@ -96,6 +95,7 @@ public class WritingView extends View {
             //path.quadTo(this.x, this.y, (x + this.x) / 2, (y + this.y) / 2);
             this.x = x;
             this.y = y;
+            canvas.drawCircle(x,y,35,bitmapPaint);
         }
     }
 
@@ -158,7 +158,6 @@ public class WritingView extends View {
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
-
                 String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();
                 File myDir = new File(root + "/Signature");
                 if (!myDir.exists()) {
