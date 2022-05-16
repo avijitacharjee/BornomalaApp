@@ -62,7 +62,6 @@ public class ColorPenView extends androidx.appcompat.widget.AppCompatTextView {
             //paint.setColor(Color.rgb((int)(Math.random()*256),(int)(Math.random()*256),(int)(Math.random()*256)));
             canvas.drawCircle(p.x, p.y, 35, paint);
         }
-
     }
 
     public boolean checkImage() {

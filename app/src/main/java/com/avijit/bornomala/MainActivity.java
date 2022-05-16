@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
             binding.writeLogo.setVisibility(View.VISIBLE);
             binding.evalLayout.setVisibility(View.VISIBLE);
             binding.gameButtonLayout.setVisibility(View.VISIBLE);
-            binding.writeLayout2.setVisibility(View.VISIBLE);
+            //binding.writeLayout2.setVisibility(View.VISIBLE);
         }else {
             super.onBackPressed();
         }
