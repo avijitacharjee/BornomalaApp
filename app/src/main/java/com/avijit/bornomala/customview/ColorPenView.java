@@ -37,6 +37,7 @@ import java.util.List;
 public class ColorPenView extends androidx.appcompat.widget.AppCompatTextView {
     private static final String TAG = "ColorPenView";
     private List<Point> points = new ArrayList<>();
+    Point point = null;
     Paint paint = new Paint();
     Resources res = getResources();
     Bitmap bitmap = BitmapFactory.decodeResource(res, R.drawable.ho);
@@ -58,10 +59,17 @@ public class ColorPenView extends androidx.appcompat.widget.AppCompatTextView {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         paint.setColor(color);
-        for (Point p : points) {
-            //paint.setColor(Color.rgb((int)(Math.random()*256),(int)(Math.random()*256),(int)(Math.random()*256)));
-            canvas.drawCircle(p.x, p.y, 35, paint);
+        if(point!=null){
+            canvas.drawCircle(point.x, point.y, 35, paint);
         }
+//        for (Point p : points) {
+//            //paint.setColor(Color.rgb((int)(Math.random()*256),(int)(Math.random()*256),(int)(Math.random()*256)));
+//            canvas.drawCircle(p.x, p.y, 35, paint);
+////            if(p.x>=550 && p.x<=600 && p.y>=40 && p.y <= 80){
+////                Toast.makeText(getContext(), "Found", Toast.LENGTH_SHORT).show();
+////            }
+//            Log.d(TAG, "onDraw: "+p.toString());
+//        }
         //checkImage();
     }
     public boolean checkImage(){
@@ -126,8 +134,12 @@ public class ColorPenView extends androidx.appcompat.widget.AppCompatTextView {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        points.add(new Point((int) event.getX(), (int) event.getY()));
+        point = new Point((int) event.getX(), (int) event.getY());
+        points.add(point);
         //check();
+//        if((int)event.getX()==500 && (int)event.getY()==58){
+//            Toast.makeText(getContext(), "Found", Toast.LENGTH_SHORT).show();
+//        }
         invalidate();
         //checkImage();
         return true;
