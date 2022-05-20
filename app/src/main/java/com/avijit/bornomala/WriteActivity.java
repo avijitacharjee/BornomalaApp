@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +18,8 @@ import com.avijit.bornomala.databinding.ActivityWriteBinding;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import me.jfenn.colorpickerdialog.dialogs.ColorPickerDialog;
 
@@ -24,6 +28,7 @@ public class WriteActivity extends AppCompatActivity {
     ActivityWriteBinding binding;
     WriteAdapter adapter;
     List<String> chars;
+    int flag = 0;
     public static final int PERMISSION_REQUEST_CODE =102;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +45,7 @@ public class WriteActivity extends AppCompatActivity {
         View.OnClickListener recyclerItemListener = v -> {
             int itemPosition = binding.recyclerView.getChildLayoutPosition(v);
             //binding.customView.setText(chars.get(itemPosition));
-            binding.customView.checkImage();
+            //binding.customView.checkImage();
         };
         adapter = new WriteAdapter(chars,recyclerItemListener);
         binding.recyclerView.setAdapter(adapter);
@@ -52,6 +57,7 @@ public class WriteActivity extends AppCompatActivity {
                     .withColor(getResources().getColor(R.color.colorAccent)) // the default / initial color
                     .withListener((dialog, color) -> {
                         binding.recyclerView.setBackgroundColor(color);
+                                
                         binding.customView.setPenColor(color);
                     })
                     .show(getSupportFragmentManager(), "colorPicker");
@@ -79,8 +85,34 @@ public class WriteActivity extends AppCompatActivity {
             }
             //binding.customView.saveToDevice();
         });
+        /*Timer timer = new Timer();
+        binding.customView.checkImage();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                a(binding.customView.checkImage());
+            }
+        }, 2000, 1000);//wait 0 ms before doing the action and do it evry 1000ms (1second)
+*/
     }
+    private void a(long count){
+        if(count<1000){
+            new Handler(Looper.getMainLooper()).post(new Runnable(){
+                @Override
+                public void run() {
+                    if(flag==0){
+                        binding.customView.setBackground(getResources().getDrawable(R.drawable.a1));
+                    }else if(flag==1) {
+                        binding.customView.setBackground(getResources().getDrawable(R.drawable.a2));
+                    }else if(flag==2){
+                        binding.customView.setBackground(getResources().getDrawable(R.drawable.a4));
+                    }
+                    flag++;
+                }
+            });
 
+        }
+    }
     public void addLetters() {
         // Vowels
         chars.add("অ");
