@@ -3,6 +3,7 @@ package com.avijit.bornomala;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -44,7 +45,8 @@ public class WriteActivity extends AppCompatActivity {
         addLetters();
         View.OnClickListener recyclerItemListener = v -> {
             int itemPosition = binding.recyclerView.getChildLayoutPosition(v);
-            //binding.customView.setText(chars.get(itemPosition));
+            binding.customView.setText(chars.get(itemPosition));
+            binding.customView.setBackgroundColor(Color.rgb(255,255,255));
             //binding.customView.checkImage();
         };
         adapter = new WriteAdapter(chars,recyclerItemListener);
