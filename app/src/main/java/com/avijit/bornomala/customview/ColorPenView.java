@@ -1,7 +1,6 @@
 package com.avijit.bornomala.customview;
 
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,14 +8,12 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -24,7 +21,6 @@ import androidx.annotation.Nullable;
 import com.avijit.bornomala.R;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -42,43 +38,58 @@ public class ColorPenView extends androidx.appcompat.widget.AppCompatTextView {
     Resources res = getResources();
     Bitmap bitmap = BitmapFactory.decodeResource(res, R.drawable.ho);
     int color = Color.GREEN;
+    private static final int TOLERANCE = 1000;
+    int flag = 0;
+
 
     public ColorPenView(Context context) {
         super(context);
+
     }
 
     public ColorPenView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+
     }
 
     public ColorPenView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         paint.setColor(color);
-        if(point!=null){
-            canvas.drawCircle(point.x, point.y, 35, paint);
-        }
-//        for (Point p : points) {
-//            //paint.setColor(Color.rgb((int)(Math.random()*256),(int)(Math.random()*256),(int)(Math.random()*256)));
-//            canvas.drawCircle(p.x, p.y, 35, paint);
-////            if(p.x>=550 && p.x<=600 && p.y>=40 && p.y <= 80){
-////                Toast.makeText(getContext(), "Found", Toast.LENGTH_SHORT).show();
-////            }
-//            Log.d(TAG, "onDraw: "+p.toString());
+//        if(point!=null){
+//            canvas.drawCircle(point.x, point.y, 35, paint);
 //        }
-        //checkImage();
+        for (Point p : points) {
+            //paint.setColor(Color.rgb((int)(Math.random()*256),(int)(Math.random()*256),(int)(Math.random()*256)));
+            canvas.drawCircle(p.x, p.y, 35, paint);
+
+            //Log.d(TAG, "onDraw: "+p.toString());
+        }
+        if(point!=null) {
+            if (point.x > 600 && point.y >= 40 && point.y <= 80) {
+                setBackground(getResources().getDrawable(R.drawable.a1));
+            }
+            if(point.x>600 && point.y >=557){
+                setBackground(getResources().getDrawable(R.drawable.a2));
+            }
+            if(point.x>520 && point.x < 660 && point.y>420 && point.y <470){
+                setBackground(getResources().getDrawable(R.drawable.a4));
+            }
+        }
     }
-    public boolean checkImage(){
+    public long checkImage(){
         int width = getWidth();
         int height = getHeight();
         Bitmap bitmap = takeScreenShot(this);
         this.bitmap = bitmap;
         int A, R, G, B;
         int pixel;
+        int count = 0;
         for(int i =0;i<width;i++){
             for(int j=0;j<height;j++){
                 pixel = bitmap.getPixel(i,j);
@@ -87,11 +98,14 @@ public class ColorPenView extends androidx.appcompat.widget.AppCompatTextView {
                 G = Color.green(pixel);
                 B = Color.blue(pixel);
                 if(R>100 && G <100 && B <100){
-                    Log.d(TAG, "checkImage: "+R);
+                    count++;
                 }
             }
         }
-        return true;
+//        Log.d(TAG, "time2"+System.currentTimeMillis());
+        Log.d(TAG, "checkImage: "+count);
+
+        return count;
     }
     /*public boolean checkImage() {
         int width = getWidth();
@@ -137,9 +151,9 @@ public class ColorPenView extends androidx.appcompat.widget.AppCompatTextView {
         point = new Point((int) event.getX(), (int) event.getY());
         points.add(point);
         //check();
-//        if((int)event.getX()==500 && (int)event.getY()==58){
-//            Toast.makeText(getContext(), "Found", Toast.LENGTH_SHORT).show();
-//        }
+        /*if((int)event.getX()==500 && (int)event.getY()==58){
+            Toast.makeText(getContext(), "Found", Toast.LENGTH_SHORT).show();
+        }*/
         invalidate();
         //checkImage();
         return true;
@@ -152,7 +166,7 @@ public class ColorPenView extends androidx.appcompat.widget.AppCompatTextView {
         invalidate();
     }
 
-    public boolean check() {
+    public long check() {
         return checkImage();
     }
 

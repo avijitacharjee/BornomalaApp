@@ -87,7 +87,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="30dp"
-        android:background="@drawable/v0"
+        android:background="@drawable/a0"
         android:elevation="10dp"
         android:autoSizeTextType="uniform"
         android:autoSizeMinTextSize="120sp"
