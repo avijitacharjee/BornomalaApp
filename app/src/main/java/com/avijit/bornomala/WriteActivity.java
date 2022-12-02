@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -69,6 +70,8 @@ public class WriteActivity extends AppCompatActivity {
                     // include a "cancel" or "no thanks" button that allows the user to
                     // continue using your app without granting the permission.
 
+                    requestPermissions(new String[] { Manifest.permission.WRITE_EXTERNAL_STORAGE , Manifest.permission.READ_EXTERNAL_STORAGE},
+                            PERMISSION_REQUEST_CODE);
                 } else {
                     // You can directly ask for the permission.
                     // The registered ActivityResultCallback gets the result of this request.
@@ -145,14 +148,11 @@ public class WriteActivity extends AppCompatActivity {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 &&
                         grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    binding.customView.saveToDevice();
                     // Permission is granted. Continue the action or workflow
                     // in your app.
                 }  else {
-                    // Explain to the user that the feature is unavailable because
-                    // the features requires a permission that the user has denied.
-                    // At the same time, respect the user's decision. Don't link to
-                    // system settings in an effort to convince the user to change
-                    // their decision.
+                    Toast.makeText(CONTEXT, "Allow permissions to save to sd card", Toast.LENGTH_SHORT).show();
                 }
                 return;
         }

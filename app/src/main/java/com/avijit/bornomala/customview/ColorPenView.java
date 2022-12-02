@@ -62,7 +62,6 @@ public class ColorPenView extends androidx.appcompat.widget.AppCompatTextView {
             //paint.setColor(Color.rgb((int)(Math.random()*256),(int)(Math.random()*256),(int)(Math.random()*256)));
             canvas.drawCircle(p.x, p.y, 35, paint);
         }
-
     }
 
     public boolean checkImage() {
@@ -186,7 +185,7 @@ public class ColorPenView extends androidx.appcompat.widget.AppCompatTextView {
                     myDir.mkdirs();
                 }
                 // Create imageDir
-                File mypath = new File(myDir, "Bornomala_"+System.currentTimeMillis()+".jpg");
+                File mypath = new File(myDir, "Bornomala_" + System.currentTimeMillis() + ".jpg");
 
                 FileOutputStream fos = null;
                 try {
@@ -205,8 +204,6 @@ public class ColorPenView extends androidx.appcompat.widget.AppCompatTextView {
                     }
                 }
             }
-
-            ;
         });
     }
 }
